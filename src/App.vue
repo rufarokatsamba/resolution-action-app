@@ -1,24 +1,51 @@
 <template>
-  <div class="container mx-auto bg-gray-200 rounded-xl shadow border p-8 m-10">
-     <p class="text-3xl text-gray-700 font-bold mb-5">
-       Welcome!
-     </p>
-     <p class="text-gray-500 text-lg">
-       Vue and Tailwind CSS in action
-     </p>
+  <div>
+    <router-view/>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import { Component, Vue } from "vue-property-decorator";
+import { namespace } from "vuex-class";
+const Auth = namespace("Auth");
 
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class App extends Vue {}
+@Component
+export default class App extends Vue {
+  @Auth.State("user")
+  private currentUser!: any;
+
+  @Auth.Action
+  private signOut!: () => void;
+
+  get showAdminBoard(): boolean {
+    if (this.currentUser && this.currentUser.roles) {
+      return this.currentUser.roles.includes("ROLE_ADMIN");
+    }
+
+    return false;
+  }
+  get loggedIn(): boolean {
+    if (this.currentUser && this.currentUser.roles) {
+      return this.currentUser.roles.includes("ROLE_ADMIN");
+    }
+
+    return false;
+  }
+  
+
+  get showModeratorBoard(): boolean {
+    if (this.currentUser && this.currentUser.roles) {
+      return this.currentUser.roles.includes("ROLE_MODERATOR");
+    }
+
+    return false;
+  }
+
+  logOut() {
+    this.signOut();
+    this.$router.push("/login");
+  }
+}
 </script>
 
 <style>
