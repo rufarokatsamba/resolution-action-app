@@ -142,15 +142,13 @@
                         d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"
                       ></path>
                     </svg>
-                  
-                      <span class="ml-3">Dashboard</span>
-                
+
+                    <span class="ml-3">Dashboard</span>
                   </router-link>
                 </li>
                 <li>
-              
-                  <router-link to="/home/meeting"
-                  
+                  <router-link
+                    to="/meeting"
                     class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group"
                   >
                     <svg
@@ -163,15 +161,13 @@
                         d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
                       ></path>
                     </svg>
-                   
-                      <span class="ml-3 flex-1 whitespace-nowrap"
-                        >Meetings</span>
-                     
+
+                    <span class="ml-3 flex-1 whitespace-nowrap">Meetings</span>
                   </router-link>
                 </li>
                 <li>
                   <router-link
-                    to="/home/reports"
+                    to="/reports"
                     class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 flex items-center p-2 group"
                   >
                     <svg
@@ -199,7 +195,7 @@
         class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10"
         id="sidebarBackdrop"
       ></div>
-      <router-view></router-view>
+      <slot></slot>
     </div>
   </div>
 </template>
@@ -207,13 +203,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import MeetingService from "@/services/MeetingService";
-import DashBoard from "@/components/DashBoard.vue";
+
 import { namespace } from "vuex-class";
 const Auth = namespace("Auth");
 
 @Component({
   components: {
-    DashBoard,
+
   },
 })
 export default class Home extends Vue {

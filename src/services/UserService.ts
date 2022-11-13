@@ -1,10 +1,10 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:5082/api/Account/';
+const API_URL = 'https://localhost:7266/api/Account/';
 
 class UserService {
-  getPublicContent() {
+  getMeetings() {
     return axios.get(API_URL);
   }
 

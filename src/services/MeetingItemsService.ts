@@ -1,17 +1,33 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:5082/api/Account/';
+const API_URL = 'https://localhost:7266/api/MeetingItem/';
 
 class MeetingItemsService {
   getAllMeetingItems() {
     return axios.get(API_URL);
   }
-  addMeetingItems(username: string, email: string, password: string) {
-    return axios.post(API_URL + 'register', {
-      username,
-      email,
-      password
+  addMeetingItems(dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number) {
+    const isClosed = false;
+    return axios.post(API_URL, {
+      personResponsible,
+      dueDate,
+      itemComment,
+      statusId,
+      isClosed,
+      meetingId
+    });
+  }
+  updateMeetingItems(dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number,id: number ) {
+    const isClosed = false;
+    return axios.put(API_URL, {
+      personResponsible,
+      dueDate,
+      itemComment,
+      statusId,
+      isClosed,
+      meetingId,
+      id
     });
   }
   getAllMeetingItemsByType() {

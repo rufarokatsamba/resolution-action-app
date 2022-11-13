@@ -1,24 +1,23 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:5082/api/Account/';
+const API_URL = 'https://localhost:7266/api/MeetingType/';
 
 class MeetingTypeService {
   getAllMeetingTypes() {
     return axios.get(API_URL);
   }
 
-  getMeetings() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+  addMeetingType(description: string) {
+    return axios.post(API_URL, {
+      description
+    });
   }
 
-  getModeratorBoard() {
-    return axios.get(API_URL + 'mod', { headers: authHeader() });
+  getMeetingTypeById(id: number) {
+    return axios.get(API_URL + '/'+ id, { headers: authHeader() }); 
   }
 
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
-  }
 }
 
 export default new MeetingTypeService();
