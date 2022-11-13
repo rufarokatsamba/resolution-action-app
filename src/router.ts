@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "@/components/Home.vue";
 import MeetingComponent from "@/components/MeetingComponent.vue";
-import Reports from "@/components/Reports.vue";
+import ReportComponent from "@/components/ReportComponent.vue";
+import ItemStatusComponent from "@/components/ItemStatusComponent.vue";
+import MeetingTypeComponent from "@/components/MeetingTypeComponent.vue";
 import DashBoard from "@/components/DashBoard.vue";
 import Login from "@/components/auth/Login.vue";
 import Register from "@/components/auth/Register.vue";
@@ -23,8 +24,16 @@ const routes: Array<RouteConfig> = [
     component: MeetingComponent,
   },
   {
+    path: "/meeting-type",
+    component: MeetingTypeComponent,
+  },
+  {
+    path: "/item-status",
+    component: ItemStatusComponent,
+  },
+  {
     path: "/reports",
-    component: Reports,
+    component: ReportComponent,
   },
   {
     path: "/profile",

@@ -124,7 +124,7 @@
       MainLayout,
     },
   })
-  export default class Home extends Vue {
+  export default class ReportComponent extends Vue {
     private content = "";
     @Auth.State("user")
     private currentUser!: any;
