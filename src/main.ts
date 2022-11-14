@@ -1,11 +1,14 @@
+/* eslint-disable vue/multi-word-component-names */
 import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import "@/assets/css/tailwind.css";
+import "@/plugins/vue-moment";
 import VeeValidate from 'vee-validate';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Multiselect from "vue-multiselect";
 import {
   faHome,
   faUser,
@@ -24,8 +27,8 @@ library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt), faChalkboard
 
 Vue.use(VeeValidate);
 Vue.use(VueSweetalert2);
-
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component("multiselect", Multiselect);
 
 
 Vue.config.productionTip = false

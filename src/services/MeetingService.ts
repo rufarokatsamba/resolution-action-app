@@ -7,11 +7,13 @@ class MeetingService {
   getAllMeetings() {
     return axios.get(API_URL);
   }
-  addMeeting(identifier: string, meetingDateAndTime: string, meetingTypeId: number) {
+  addMeeting(MeetingDateAndTimeToConvert: string, meetingTypeId: number ,description: string) {
+    const identifier = "";
     return axios.post(API_URL, {
       identifier,
-      meetingDateAndTime,
+      MeetingDateAndTimeToConvert,
       meetingTypeId,
+      description
     });
   }
   getMeetingById(id: number) {

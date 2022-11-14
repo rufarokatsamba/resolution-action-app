@@ -49,7 +49,7 @@
               <div class="flex flex-col mt-8">
                 <div class="overflow-x-auto rounded-lg">
                   <div class="align-middle inline-block min-w-full">
-                    <div class="shadow overflow-hidden sm:rounded-lg">
+                    <div class="shadow overflow-hidden sm:rounded-lg overflow-y-auto scrollbar max-h-25">
                       <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                           <tr>
@@ -73,23 +73,22 @@
                             </th>
                           </tr>
                         </thead>
-                        <tbody class="bg-white">
+                        <tbody v-for="meetingItem in meetingsItems" :key="meetingItem.id" class="bg-white">
                           <tr>
                             <td
                               class="p-4 whitespace-nowrap text-sm font-normal text-gray-900"
                             >
-                              Payment from
-                              <span class="font-semibold">Bonnie Green</span>
+                              {{meetingItem.itemComment}}
                             </td>
                             <td
                               class="p-4 whitespace-nowrap text-sm font-normal text-gray-500"
                             >
-                              Apr 23 ,2021
+                            {{meetingItem.dueDate}}
                             </td>
                             <td
                               class="p-4 whitespace-nowrap text-sm font-semibold text-gray-900"
                             >
-                              $2300
+                            {{meetingItem.personResponsible}}
                             </td>
                           </tr>
                         </tbody>
@@ -110,6 +109,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import MeetingService from "@/services/MeetingService";
+import MeetingItemsService from "@/services/MeetingItemsService";
 import Footer from "@/components/common/FooterComponent.vue";
 import DashBoardMeetingCard from "@/components/common/DashBoardMeetingCard.vue";
 
@@ -126,6 +126,8 @@ const Auth = namespace("Auth");
 })
 export default class Home extends Vue {
   private content = "";
+  private meetings =[];
+  private meetingsItems =[];
   @Auth.State("user")
   private currentUser!: any;
 
@@ -146,9 +148,27 @@ export default class Home extends Vue {
     this.$router.push("/login");
   }
   mounted() {
+    this.loadMeetingItems();
+    this.loadMeetings();    
+  }
+
+  loadMeetings(){
     MeetingService.getAllMeetings().then(
       (response) => {
-        this.content = response.data;
+        this.meetings = response.data;
+      },
+      (error) => {
+        this.content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
+  }
+  loadMeetingItems(){
+    MeetingItemsService.getAllMeetingItems().then(
+      (response) => {
+        this.meetingsItems = response.data;
       },
       (error) => {
         this.content =
