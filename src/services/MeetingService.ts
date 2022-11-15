@@ -1,23 +1,22 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:5082/api/Account/';
-
+const API_URL = `${process.env.VUE_APP_RESOLUTION_SYSTEM_API}/Meeting/`;
 class MeetingService {
   getAllMeetings() {
     return axios.get(API_URL);
   }
-
-  getAllMeetingsByType() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+  addMeeting(MeetingDateAndTimeToConvert: string, meetingTypeId: number ,description: string) {
+    const identifier = "";
+    return axios.post(API_URL, {
+      identifier,
+      MeetingDateAndTimeToConvert,
+      meetingTypeId,
+      description
+    });
   }
-
-  getModeratorBoard() {
-    return axios.get(API_URL + 'mod', { headers: authHeader() });
-  }
-
-  getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
+  getMeetingById(id: number) {
+    return axios.get(API_URL + '/'+ id, { headers: authHeader() }); 
   }
 }
 

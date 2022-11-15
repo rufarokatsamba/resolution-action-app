@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5082/api/Account/';
-
+const API_URL = `${process.env.VUE_APP_RESOLUTION_SYSTEM_API}/Account/`;
 class AuthService {
   login(username: string, password: string) {
+    console.log(process.env.RESOLUTION_SYSTEM_API);
     const email = username;
     return axios
       .post(API_URL + 'login', {
@@ -11,7 +11,7 @@ class AuthService {
         password
       })
       .then(response => {
-        if(response.data.message != null ){
+        if(response.data.ErrorMessage != null ){
           return response.data;
         }
         else if(response.data.accessToken) {
@@ -26,12 +26,28 @@ class AuthService {
     localStorage.removeItem('user');
   }
 
-  register(username: string, email: string, password: string) {
-    return axios.post(API_URL + 'register', {
-      username,
+  register(firstName: string, lastName: string,email: string, password: string) {
+    const userName =  email ;
+    const confirmationPassword = password;
+    const phoneNumber = "+2637899302";
+
+    return axios.post(API_URL + 'Create', {
+      userName,
       email,
-      password
+      password,
+      confirmationPassword,
+      firstName,
+      lastName,
+      phoneNumber
     });
+  }
+
+  getAllUsers() {
+    return axios.get(API_URL + 'GetAll');
+  }
+
+  getByID() {
+    return axios.get(API_URL + 'GetAll');
   }
 }
 

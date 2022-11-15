@@ -17,13 +17,6 @@ export default class App extends Vue {
   @Auth.Action
   private signOut!: () => void;
 
-  get showAdminBoard(): boolean {
-    if (this.currentUser && this.currentUser.roles) {
-      return this.currentUser.roles.includes("ROLE_ADMIN");
-    }
-
-    return false;
-  }
   get loggedIn(): boolean {
     if (this.currentUser && this.currentUser.roles) {
       return this.currentUser.roles.includes("ROLE_ADMIN");
@@ -48,6 +41,5 @@ export default class App extends Vue {
 }
 </script>
 
-<style>
-
+<style lang="scss">
 </style>
