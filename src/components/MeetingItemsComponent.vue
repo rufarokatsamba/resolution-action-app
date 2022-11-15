@@ -35,8 +35,7 @@
   <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
   import Footer from "@/components/common/FooterComponent.vue";
-  import MeetingItemsComponentTable from "@/components/common/MeetingItemsComponentTable.vue";
-  import MeetingItemsService from "@/services/MeetingItemsService";
+  import MeetingItemsComponentTable from "@/components/common/MeetingItemsComponentTable.vue"; 
   import { namespace } from "vuex-class";
   import MainLayout from "./layouts/MainLayout.vue";
   const Auth = namespace("Auth");
@@ -78,7 +77,7 @@
     mounted() {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       //@ts-ignore
-      this.content=this.$route.params.type
+      console.log("here now",this.meetingItems)
 
     }
   }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const API_URL = 'https://localhost:7266/api/Account/';
-
+const API_URL = `${process.env.VUE_APP_RESOLUTION_SYSTEM_API}/Account/`;
 class AuthService {
   login(username: string, password: string) {
+    console.log(process.env.RESOLUTION_SYSTEM_API);
     const email = username;
     return axios
       .post(API_URL + 'login', {

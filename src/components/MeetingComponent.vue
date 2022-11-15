@@ -12,7 +12,7 @@
             >
               <div class="flex items-center justify-between mb-4">
                 <div class="flex-shrink-0">
-                  <h3 class="text-l font-bold text-gray-900">Meetings</h3>
+                  <h3 class="text-l font-bold text-gray-900"></h3>
                 </div>
                 <div
                   class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
@@ -29,11 +29,18 @@
                 </div>
               </div>
               <div id="main-chart">
-                <div v-if="showMeetings">
-                  <MeetingTableComponent />
+                <div v-if="showMeetingItems== false">
+                    <div v-if="showMeetings">
+                    <MeetingTableComponent
+                    @clicked="onClickChild" />
+                    </div>
+                    <div v-else>
+                    <CreateMeetingComponent />
+                  </div>
                 </div>
                 <div v-else>
-                  <CreateMeetingComponent />
+                  <MeetingItemsComponentTable
+                  :meetingItemsProp = "meetingItemsProp"/>
                 </div>
               </div>
             </div>
@@ -51,6 +58,7 @@ import MeetingService from "@/services/MeetingService";
 import Footer from "@/components/common/FooterComponent.vue";
 import DashBoardMeetingCard from "@/components/common/DashBoardMeetingCard.vue";
 import MeetingTableComponent from "@/components/common/MeetingTableComponent.vue";
+import MeetingItemsComponentTable from "@/components/common/MeetingItemsComponentTable.vue";
 import CreateMeetingComponent from "@/components/common/CreateMeetingComponent.vue";
 import { namespace } from "vuex-class";
 import MainLayout from "./layouts/MainLayout.vue";
@@ -63,6 +71,7 @@ const Auth = namespace("Auth");
     MainLayout,
     MeetingTableComponent,
     CreateMeetingComponent,
+    MeetingItemsComponentTable,
   },
 })
 export default class MeetingComponent extends Vue {
@@ -70,6 +79,9 @@ export default class MeetingComponent extends Vue {
   @Auth.State("user")
   private currentUser!: any;
   private showMeetings = true;
+  private showMeetingItems = false;
+  private meetingItems = [];
+  private meetingItemsProp = [];
 
   @Auth.Action
   private signOut!: () => void;
@@ -90,7 +102,15 @@ export default class MeetingComponent extends Vue {
     this.signOut();
     this.$router.push("/login");
   }
-
+  onClickChild(val){
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+    this.meetingItems.push(val);
+    this.meetingItemsProp.push(this.meetingItems[0]);
+    if(this.meetingItemsProp.length > 0){
+      this.showMeetingItems = true;
+    }
+  }
   mounted() {
     MeetingService.getAllMeetings().then(
       (response) => {

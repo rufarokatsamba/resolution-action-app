@@ -37,10 +37,6 @@ const routes: Array<RouteConfig> = [
     component: ReportComponent,
   },
   {
-    path: "/meetingItems",
-    component: MeetingItemsComponent,
-  },  
-  {
     path: "/profile",
     name: "profile",
     // lazy-loaded

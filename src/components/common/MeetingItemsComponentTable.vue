@@ -1,8 +1,6 @@
 <template>
-    <div class="overflow-x-auto">
-      <div class="min-w-screen flex font-sans rounded">
-        <div class="w-full"><div>
-                <div
+  <div class="overflow-x-auto">
+    <div
                   v-if="showModal"
                   class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
                 >
@@ -15,7 +13,7 @@
                       <div
                         class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
                       >
-                        <h3 class="text-3xl font-semibold">Create Item</h3>
+                        <h3 class="text-3xl font-semibold">Edit Item</h3>
                         <button
                           class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                           v-on:click="toggleModal()"
@@ -96,7 +94,7 @@
                           Close
                         </button>
                         <button
-                         @click.prevent="updateItem"
+                         @click.prevent="createMeetingItem"
                           class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
                         >
                           Save
@@ -109,124 +107,115 @@
                   v-if="showModal"
                   class="opacity-25 fixed inset-0 z-40 bg-black"
                 ></div>
-              </div>
-          <div class="rounded mt-6 h-60 overflow-y-auto scrollbar">
-            <table class="min-w-max w-full table-auto">
-              <thead>
-                <tr
-                  class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal"
-                >
-                  <th class="py-3 px-6 text-left">id</th>
-                  <th class="py-3 px-6 text-left">Item</th>
-                  <th class="py-3 px-6 text-center">Comment</th>
-                  <th class="py-3 px-6 text-center">Status</th>
-                  <th class="py-3 px-6 text-center">Responsible Person</th>
-                  <th class="py-3 px-6 text-center">Due</th>
-                  <th class="py-3 px-6 text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody v-for="meetingItem in localMeetingItemsObject" :key="meetingItem.id" class="text-gray-600 text-sm font-light">
-                <tr class="border-b border-gray-200 hover:bg-gray-100">
-                  <td class="py-3 px-6 text-left whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div class="mr-2">
-                      </div>
-                      <span class="font-medium">{{meetingItem.id}}</span>
+    <div class="min-w-screen flex font-sans rounded">
+      <div class="w-full">
+        <div class="rounded mt-6 h-60 overflow-y-auto scrollbar">
+          <table class="min-w-max w-full table-auto">
+            <thead>
+              <tr
+                class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal"
+              >
+                <th class="py-3 px-6 text-left">id</th>
+                <th class="py-3 px-6 text-left">Item</th>
+                <th class="py-3 px-6 text-center">Comment</th>
+                <th class="py-3 px-6 text-center">Date</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody v-for="meetingItem in meetingItemsProp[0]" :key="meetingItem.id" class="text-gray-600 text-sm font-light">
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="mr-2">
                     </div>
-                  </td>
-                  <td class="py-3 px-6 text-left">
-                    <div class="flex items-center">
-                      <div class="mr-2">
-                        
-                      </div>
-                      <span>{{meetingItem.meetingItem}}</span>
-                    </div>
-                  </td>
-                  <td class="py-3 px-6 text-center">
-                    <div class="flex items-center justify-center">
-                        {{meetingItem.itemComment}}
+                    <span class="font-medium">{{meetingItem.id}}</span>
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-left">
+                  <div class="flex items-center">
+                    <div class="mr-2">
                       
                     </div>
-                  </td>
-                  <td class="py-3 px-6 text-center">
-                    {{meetingItem.status}}
-                  </td>
-                  <td class="py-3 px-6 text-center">
-                    <span
-                      >{{meetingItem.personResponsible}}</span
+                    <span>{{meetingItem.meetingItem}}</span>
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <div class="flex items-center justify-center">
+                    {{meetingItem.itemComment}}
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <span
+                    >{{meetingItem.dueDate}}</span
+                  >
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <div class="flex item-center justify-center">
+                    <div
+                     @click="toggleModal()"
+                      class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
                     >
-                  </td>
-                  <td class="py-3 px-6 text-center">
-                    <span
-                      >{{meetingItem.dueDate}}</span
-                    >
-                  </td>
-                  <td class="py-3 px-6 text-center">
-                    <div class="flex item-center justify-center">
-                      <div
-                        class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
-                      >
-                      <div @click="toggleModal()" class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                                            </svg>
-                                        </div>
-                      </div>                    
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
+                    </div>                    
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script lang="ts">
-  import { Component, Vue , Prop } from "vue-property-decorator";
-  import { namespace } from "vuex-class";
-  const Auth = namespace("Auth");
-  
-  @Component({
-    components: {},
-  })
-  export default class MeetingItemsComponentTable extends Vue {
-    @Prop({ type: Array }) readonly meetingsItems!: [];
-    @Auth.State("user")
-    private currentUser!: any;
-    private showModal = false;
-    private localMeetingItemsObject = [];
-  
-    @Auth.Action
-    private signOut!: () => void;
-  
-    get loggedIn(): boolean {
-      if (this.currentUser != null) {
-        return true;
-      } else {
-        this.signOut();
-        this.$router.push("/login");
-      }
-      return false;    
-    }
-    mounted(){
-        if(this.meetingsItems.length > 0){
-            this.localMeetingItemsObject = this.meetingsItems
-        }
-        console.log(this.localMeetingItemsObject)
-      }
-      toggleModal() {
-            this.showModal = !this.showModal;
-        }
-    updateItem(){
-        //todo
-    }    
-    logOut() {
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+import MeetingService from "@/services/MeetingService";
+import { namespace } from "vuex-class";
+import Datepicker from "vuejs-datepicker";
+const Auth = namespace("Auth");
+
+@Component({
+  components: {
+    Datepicker,
+  },
+})
+export default class MeetingItemsComponentTable extends Vue {
+  @Prop({ type: Array }) readonly meetingItemsProp!: [];
+  private content = "";
+  @Auth.State("user")
+  private currentUser!: any;
+  private meetingItemFields: any ={ meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:""};
+  private showModal = false;
+
+  @Auth.Action
+  private signOut!: () => void;
+
+  get loggedIn(): boolean {
+    if (this.currentUser != null) {
+      return true;
+    } else {
       this.signOut();
       this.$router.push("/login");
     }
-      
+    return false;
   }
-  </script>
-  
+  toggleModal() {
+    this.showModal = !this.showModal;
+  }
+  logOut() {
+    this.signOut();
+    this.$router.push("/login");
+  }
+  mounted() {
+    console.log("here noew", this.meetingItemsProp)
+    if(this.meetingItemsProp.length > 0){
+       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      console.log(this.meetingItemsProp[0])
+    }
+  }
+}
+</script>

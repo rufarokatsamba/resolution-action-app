@@ -1,7 +1,7 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'https://localhost:7266/api/MeetingType/';
+const API_URL = `${process.env.VUE_APP_RESOLUTION_SYSTEM_API}/MeetingType/`;
 
 class MeetingTypeService {
   getAllMeetingTypes() {
