@@ -1,61 +1,64 @@
 <template>
-  <section class="py-1 bg-blueGray-50">
-    <div class="w-full mb-1 xl:mb-0 px-1 mx-auto">
-      <div
-        class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 border-b-2 rounded scroll-y-auto"
-      >
-        <div class="rounded-t mb-0 px-4 py-3 border-0">
-          <div class="flex flex-wrap items-center"></div>
-        </div>
-
-        <div class="block w-full overflow-x-auto">
-          <table class="items-center bg-transparent w-full border-collapse">
-            <thead>
-              <tr>
-                <th
-                  class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                >
-                  Meeting name
-                </th>
-                <th
-                  class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                >
-                  Date Held
-                </th>
-                <th
-                  class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                >
-                  Type
-                </th>
-                <th
-                  class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
-                >
-                  Meeting Items
-                </th>
+  <div class="overflow-x-auto">
+    <div class="min-w-screen flex font-sans rounded">
+      <div class="w-full">
+        <div class="rounded mt-6 h-80 overflow-y-auto scrollbar border-b-2">
+          <table class="min-w-max w-full table-auto">
+            <thead class="sticky top-0 z-10">
+              <tr
+                class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal"
+              >
+                <th class="py-3 px-6 text-left">id</th>
+                <th class="py-3 px-6 text-left">Identifier</th>
+                <th class="py-3 px-6 text-center">Description</th>
+                <th class="py-3 px-6 text-center">Date</th>
+                <th class="py-3 px-6 text-center">Meeting Items</th>
               </tr>
             </thead>
-
-            <tbody>
-              <tr>
-                <th
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700"
-                >
-                  F33
-                </th>
-                <td
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                >
-                  2022/11/21
+            <tbody v-for="meeting in meetings" :key="meeting.id" class="text-gray-600 text-sm font-light">
+              <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="mr-2">
+                    </div>
+                    <span class="font-medium">{{meeting.id}}</span>
+                  </div>
                 </td>
-                <td
-                  class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                >
-                  Finance
+                <td class="py-3 px-6 text-left">
+                  <div class="flex items-center">
+                    <div class="mr-2">
+                      
+                    </div>
+                    <span>{{meeting.identifier}}</span>
+                  </div>
                 </td>
-                <td
-                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"
-                >
-                  45
+                <td class="py-3 px-6 text-center">
+                  <div class="flex items-center justify-center">
+                    {{meeting.meetingType.description}}
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <span
+                    >{{meeting.meetingDateAndTime}}</span
+                  >
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <div class="flex item-center justify-center">
+                    <div
+                      class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                    >
+                    </div>
+                    <div
+                      class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                    >
+                      
+                    </div>
+                    <div
+                      class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                    >
+                      {{ meetingItemsLength(meeting.meetingItems) }}
+                    </div>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -63,12 +66,11 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import MeetingService from "@/services/MeetingService";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { namespace } from "vuex-class";
 const Auth = namespace("Auth");
 
@@ -76,6 +78,7 @@ const Auth = namespace("Auth");
   components: {},
 })
 export default class DashBoardMeetingCard extends Vue {
+  @Prop({ type: Array }) readonly meetings!: [];
   private content = "";
   @Auth.State("user")
   private currentUser!: any;
@@ -83,20 +86,12 @@ export default class DashBoardMeetingCard extends Vue {
   @Auth.Action
   private signOut!: () => void;
 
-  mounted() {
-    MeetingService.getAllMeetings().then(
-      (response) => {
-        this.content = response.data;
-      },
-      (error) => {
-        this.content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-      }
-    );
+  mounted() {    
+    //
   }
-
+  meetingItemsLength(arr: []): number {
+    return arr.length;
+  }
   get loggedIn(): boolean {
     if (this.currentUser != null) {
       return true;
@@ -106,11 +101,6 @@ export default class DashBoardMeetingCard extends Vue {
     }
 
     return false;
-  }
-
-  meetings() {
-    console.log("here");
-    this.$router.push("/meetings");
   }
   logOut() {
     this.signOut();

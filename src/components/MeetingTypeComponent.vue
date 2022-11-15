@@ -265,7 +265,6 @@ export default class MeetingTypeComponent extends Vue {
   loadTypes(){
     MeetingTypeService.getAllMeetingTypes().then(
       (response) => {
-        console.log("data rese", response.data)
         this.content = response.data;
       },
       (error) => {

@@ -6,28 +6,24 @@
       >
         <main>
           <div class="pt-6 px-4">
-            <div
-              class="w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4"
-            >
+            <div class="w-full grid grid-cols-1 xl:grid-cols-1 2xl:grid-cols-1">
               <div
                 class="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 2xl:col-span-2"
               >
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex-shrink-0">
-                    <h3 class="text-l font-bold text-gray-900">
-                      Reports Page 
-                    </h3>
-                    <h4>Coming Soon!!</h4>
+                    <h3 class="text-l font-bold text-gray-900">Meetings Items</h3>
                   </div>
                   <div
                     class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
-                  >
+                  >                    
                   </div>
                 </div>
-                <div id="main-chart">
-                
+                <div id="main-chart" v-if="meetingItems"> 
+                    <MeetingItemsComponentTable
+                    :meetingsItems="meetingItems" /> 
                 </div>
-              </div>          
+              </div>
             </div>
           </div>
         </main>
@@ -38,10 +34,9 @@
   
   <script lang="ts">
   import { Component, Vue } from "vue-property-decorator";
-  import MeetingService from "@/services/MeetingService";
   import Footer from "@/components/common/FooterComponent.vue";
-  import DashBoardMeetingCard from "@/components/common/DashBoardMeetingCard.vue";
-  
+  import MeetingItemsComponentTable from "@/components/common/MeetingItemsComponentTable.vue";
+  import MeetingItemsService from "@/services/MeetingItemsService";
   import { namespace } from "vuex-class";
   import MainLayout from "./layouts/MainLayout.vue";
   const Auth = namespace("Auth");
@@ -49,14 +44,17 @@
   @Component({
     components: {
       Footer,
-      DashBoardMeetingCard,
       MainLayout,
+      MeetingItemsComponentTable,
     },
   })
-  export default class ReportComponent extends Vue {
+  export default class MeetingItemsComponent extends Vue {
     private content = "";
     @Auth.State("user")
     private currentUser!: any;
+    private showMeetings = true;
+    private meetingsItems = [];
+    private meetingItems = [];
   
     @Auth.Action
     private signOut!: () => void;
@@ -70,22 +68,18 @@
       }
       return false;
     }
+    createNew() {
+      this.showMeetings = false;
+    }
     logOut() {
       this.signOut();
       this.$router.push("/login");
     }
     mounted() {
-      MeetingService.getAllMeetings().then(
-        (response) => {
-          this.content = response.data;
-        },
-        (error) => {
-          this.content =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      this.content=this.$route.params.type
+
     }
   }
   </script>

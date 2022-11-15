@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
 import MeetingComponent from "@/components/MeetingComponent.vue";
 import ReportComponent from "@/components/ReportComponent.vue";
+import MeetingItemsComponent from "@/components/MeetingItemsComponent.vue";
 import ItemStatusComponent from "@/components/ItemStatusComponent.vue";
 import MeetingTypeComponent from "@/components/MeetingTypeComponent.vue";
 import DashBoard from "@/components/DashBoard.vue";
@@ -35,6 +36,10 @@ const routes: Array<RouteConfig> = [
     path: "/reports",
     component: ReportComponent,
   },
+  {
+    path: "/meetingItems",
+    component: MeetingItemsComponent,
+  },  
   {
     path: "/profile",
     name: "profile",

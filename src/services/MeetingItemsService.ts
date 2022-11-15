@@ -7,9 +7,10 @@ class MeetingItemsService {
   getAllMeetingItems() {
     return axios.get(API_URL);
   }
-  addMeetingItems(dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number) {
+  addMeetingItems(meetingItem: string,dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number) {
     const isClosed = false;
     return axios.post(API_URL, {
+      meetingItem,
       personResponsible,
       dueDate,
       itemComment,
@@ -18,7 +19,7 @@ class MeetingItemsService {
       meetingId
     });
   }
-  updateMeetingItems(dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number,id: number ) {
+  updateMeetingItems(dueDate: string, personResponsible: string, itemComment: string,statusId: number, meetingId: number,id: number) {
     const isClosed = false;
     return axios.put(API_URL, {
       personResponsible,

@@ -90,6 +90,7 @@ export default class MeetingComponent extends Vue {
     this.signOut();
     this.$router.push("/login");
   }
+
   mounted() {
     MeetingService.getAllMeetings().then(
       (response) => {

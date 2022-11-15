@@ -265,7 +265,6 @@ export default class ItemStatusComponent extends Vue {
   loadTypes(){
     ItemStatusService.getItemStatus().then(
       (response) => {
-        console.log("data rese", response.data)
         this.content = response.data;
       },
       (error) => {

@@ -162,7 +162,6 @@ export default class Login extends Vue {
             if (data.ErrorMessage != null) {
               Vue.swal(data.ErrorMessage);
             } else {
-              // console.log(data)
               localStorage.setItem('user', JSON.stringify(data))
               this.$router.push("/home");
             }

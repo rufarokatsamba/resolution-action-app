@@ -159,93 +159,247 @@
         </div>
         <div v-if="stepTwo" class="flex flex-col md:flex-row">
           <div class="w-full pr-10">
-        <div class="rounded mt-6 h-60 overflow-y-auto scrollbar">
-          <table class="min-w-max w-full table-auto">
-            <thead>
-              <tr
-                class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal"
-              >
-                <th class="py-3 px-6 text-left">Meeting</th>
-                <th class="py-3 px-6 text-left">Meeting Item</th>
-                <th class="py-3 px-6 text-center">Status</th>
-                <th class="py-3 px-6 text-center">Owner</th>
-                <th class="py-3 px-6 text-center">Select</th>
-              </tr>
-            </thead>
-            <tbody v-for="items in filteredMeetingItems" :key="items.id" class="text-gray-600 text-sm font-light">
-              <tr class="border-b border-gray-200 hover:bg-gray-100">
-                <td class="py-3 px-6 text-left whitespace-nowrap">
-                  <div class="flex items-center">
-                    <div class="mr-2">
-                      
-                    </div>
-                    <span class="font-medium">{{ prevMeetingIdentifier }}</span>
-                  </div>
-                </td>
-                <td class="py-3 px-6 text-left">
-                  <div class="flex items-center">
-                    <div class="mr-2">
-                     
-                    </div>
-                    <span>{{ items.itemComment }}</span>
-                  </div>
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex items-center justify-center">
-                    {{ items.status }}
-                  </div>
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <span
-                    class="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs"
-                    >{{ items.personResponsible }}</span
-                  >
-                </td>
-                <td class="py-3 px-6 text-center">
-                  <div class="flex item-center justify-center">
-                    
-                    <div
-                      class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
-                    >
-                    <input id="checkbox-table-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-        </div>
-        <div v-if="stepThree" class="flex flex-col md:flex-row">
-          <div class="w-full mx-2 flex-1 svelte-1l8159u">
-            <div
-              class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-            >
-              Username
-            </div>
-            <div
-              class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-            >
-              <input
-                placeholder="Just a hint.."
-                class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-              />
+            <div class="rounded mt-6 h-60 overflow-y-auto scrollbar">
+              <table class="min-w-max w-full table-auto">
+                <thead>
+                  <tr class="bg-gray-100 text-gray-600 text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">Meeting</th>
+                    <th class="py-3 px-6 text-left">Meeting Item</th>
+                    <th class="py-3 px-6 text-center">Status</th>
+                    <th class="py-3 px-6 text-center">Owner</th>
+                    <th class="py-3 px-6 text-center">Select</th>
+                  </tr>
+                </thead>
+                <tbody
+                  v-for="items in filteredMeetingItems"
+                  :key="items.id"
+                  class="text-gray-600 text-sm font-light"
+                >
+                  <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="mr-2"></div>
+                        <span class="font-medium">{{
+                          prevMeetingIdentifier
+                        }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-left">
+                      <div class="flex items-center">
+                        <div class="mr-2"></div>
+                        <span>{{ items.itemComment }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                      <div class="flex items-center justify-center">
+                        {{ items.status.description }}
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                      <div class="flex items-center justify-center">
+                        {{ items.personResponsible }}
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                      <div class="flex item-center justify-center">
+                        <div
+                          class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
+                        >
+                          <input
+                            v-model="checkedItems"
+                            :value="items.id"
+                            type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <div class="w-full mx-2 flex-1 svelte-1l8159u">
-            <div
-              class="font-bold h-6 mt-3 text-gray-600 text-xs leading-8 uppercase"
-            >
-              Your Email
+        </div>
+        <div v-if="stepThree" class="flex flex-col md:flex-row">
+          <div class="w-full pr-10">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex-shrink-0">
+                <h3 class="text-l font-bold text-gray-900">
+                  Meeting Items for meeting : {{ newMeetingIdentifier }}
+                </h3>
+              </div>
+              <div>
+                <div
+                  v-if="showModal"
+                  class="overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center flex"
+                >
+                  <div class="relative w-auto my-6 mx-50 max-w-6xl">
+                    <!--content-->
+                    <div
+                      class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
+                    >
+                      <!--header-->
+                      <div
+                        class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t"
+                      >
+                        <h3 class="text-3xl font-semibold">Create Item</h3>
+                        <button
+                          class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                          v-on:click="toggleModal()"
+                        >
+                          <span
+                            class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none"
+                          >
+                            ×
+                          </span>
+                        </button>
+                      </div>
+                      <!--body-->
+                      <div class="relative p-6 flex-auto">
+                        <form>
+                          <div class="-mx-3 md:flex mb-6">
+                          <div class="form-group mb-6 px-3"><p class="mb-1">Item</p>
+                            <input
+                              v-model="meetingItemFields.meetingItem"
+                              type="text"
+                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              id="meetingtypename"
+                              placeholder="meeting item"
+                            />
+                          </div>
+                          <div class="form-group mb-6"><p class="mb-1">Date</p>
+                            <div
+                              class="bg-white  p-1 flex border border-gray-200 rounded svelte-1l8159u"
+                            >
+                              <div class="relative">
+                                
+                                <div
+                                  class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none"
+                                >
+                                </div>
+                               
+                                <datepicker
+                                  v-model="meetingItemFields.dueDate"
+                                  class="px-2 appearance-none w-full text-gray-800"
+                                  name="uniquename"
+                                ></datepicker>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="-mx-3 md:flex mb-6">
+                          <div class="form-group mb-6 px-3">
+                            <input
+                              v-model="meetingItemFields.personResponsible"
+                              type="text"
+                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              id="meetingtypename"
+                              placeholder="responsible person"
+                            />
+                          </div>
+                        </div>
+                          <div class="-mx-3 md:flex-inline mb-6 px-3">
+                          <div class="form-group mb-6">
+                            <textarea
+                              v-model="meetingItemFields.itemComment"
+                              type="text"
+                              rows="4"
+                              class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                              id="meetingtypename"
+                              placeholder="comment"
+                            />
+                          </div>
+                        </div>
+                        </form>
+                      </div>
+                      <!--footer-->
+                      <div
+                        class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b"
+                      >
+                        <button
+                          v-on:click="toggleModal()"
+                          class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer text-red-500 border duration-200 ease-in-out border-red-500 transition"
+                        >
+                          Close
+                        </button>
+                        <button
+                         @click.prevent="createMeetingItem"
+                          class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  v-if="showModal"
+                  class="opacity-25 fixed inset-0 z-40 bg-black"
+                ></div>
+              </div>
+              <div
+                class="relative w-full px-4 max-w-full flex-grow flex-1 text-right"
+              >
+                <button
+                  v-on:click="toggleModal()"
+                  class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                  type="button"
+                >
+                  Add Item
+                </button>
+              </div>
             </div>
-            <div
-              class="bg-white my-2 p-1 flex border border-gray-200 rounded svelte-1l8159u"
-            >
-              <input
-                placeholder="jhon@doe.com"
-                class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
-              />
+
+            <div class="rounded mt-6 h-60 overflow-y-auto scrollbar" v-if="filteredNewMeetingItems">
+              <table class="min-w-max w-full table-auto">
+                <thead>
+                  <tr class="bg-gray-100 text-gray-600 text-sm leading-normal">
+                    <th class="py-3 px-6 text-left">Meeting Id</th>
+                    <th class="py-3 px-6 text-left">Meeting Item</th>
+                    <th class="py-3 px-6 text-left">Comment</th>
+                    <th class="py-3 px-6 text-center">Status</th>
+                    <th class="py-3 px-6 text-center">Owner</th>
+                  </tr>
+                </thead>
+                <tbody
+                  v-for="items in filteredNewMeetingItems"
+                  :key="items.id"
+                  class="text-gray-600 text-sm font-light"
+                >
+                  <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                      <div class="flex items-center">
+                        <div class="mr-2"></div>
+                        <span class="font-medium">{{
+                          newMeetingIdentifier
+                        }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-left">
+                      <div class="flex items-center">
+                        <div class="mr-2"></div>
+                        <span>{{ items.meetingItem }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-left">
+                      <div class="flex items-center">
+                        <div class="mr-2"></div>
+                        <span>{{ items.itemComment }}</span>
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                      <div class="flex items-center justify-center">
+                        {{ items.status.description }}
+                      </div>
+                    </td>
+                    <td class="py-3 px-6 text-center">
+                      <div class="flex items-center justify-center">
+                        {{ items.personResponsible }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -263,34 +417,16 @@
       <div v-if="stepTwo" class="flex p-2 mt-4">
         <div class="flex-auto flex flex-row-reverse">
           <button
-            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
+            @click.prevent="skipToEnd"
+            class="text-base hover:scale-110 ml-2 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-200 bg-teal-100 text-teal-700 border duration-200 ease-in-out border-teal-600 transition"
+          >
+            Skip
+          </button>
+          <button
+            @click.prevent="createMeetingItems"
+            class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
           >
             Save
-          </button>
-          <button
-            @click.prevent="stepNext()"
-            class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-200 bg-teal-100 text-teal-700 border duration-200 ease-in-out border-teal-600 transition"
-          >
-            Skip
-          </button>
-        </div>
-      </div>
-      <div v-if="stepThree" class="flex p-2 mt-4">
-        <button
-          class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-gray-200 bg-gray-100 text-gray-700 border duration-200 ease-in-out border-gray-600 transition"
-        >
-          Previous
-        </button>
-        <div class="flex-auto flex flex-row-reverse">
-          <button
-            class="text-base ml-2 hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-600 bg-teal-600 text-teal-100 border duration-200 ease-in-out border-teal-600 transition"
-          >
-            Next
-          </button>
-          <button
-            class="text-base hover:scale-110 focus:outline-none flex justify-center px-4 py-2 rounded font-bold cursor-pointer hover:bg-teal-200 bg-teal-100 text-teal-700 border duration-200 ease-in-out border-teal-600 transition"
-          >
-            Skip
           </button>
         </div>
       </div>
@@ -302,6 +438,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import MeetingService from "@/services/MeetingService";
 import MeetingTypeService from "@/services/MeetingTypeService";
+import MeetingItemsService from "@/services/MeetingItemsService";
 import { namespace } from "vuex-class";
 import Datepicker from "vuejs-datepicker";
 import moment from "moment";
@@ -331,13 +468,27 @@ export default class CreateMeetingComponent extends Vue {
   private currStep = 0;
   private options = [];
   private filteredMeetingItems = [];
+  private filteredNewMeetingItems =[];
   private filteredMeeting = [];
+  private newMeetingFilter = [];
+  private newMeetingId = 0;
   private description = "";
   private newMeetingIdentifier = "";
-  private prevMeetingIdentifier="";
+  private prevMeetingIdentifier = "";
   private meeting: any = { meetingDateAndTime: "", meetingTypeId: "" };
+  private meetingItemFields: any ={ meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:""};
   private resp: responseObject = { id: 0, name: "" };
   private unfiltereOptions: meetings = { id: 0, description: "" };
+  private checkedItems = [];
+  private showModal = false;
+  private meetingItem: any = {
+    dueDate: "",
+    meetingId: "",
+    personResponsible: "",
+    itemComment: "",
+    statusId: "",
+    isClosed: false,
+  };
 
   @Auth.Action
   private signOut!: () => void;
@@ -359,18 +510,17 @@ export default class CreateMeetingComponent extends Vue {
     this.loadTypes();
     this.loadMeetings();
   }
-  loadMeetings(){
+  loadMeetings() {
     MeetingService.getAllMeetings().then(
       (response) => {
         this.content = response.data;
-        console.log(this.content)
-        if(this.prevMeetingIdentifier){
-          console.log("this.filteredMeetingItems")
-          this.filteredMeeting = response.data.filter((x) => x.identifier == this.prevMeetingIdentifier);
+        if (this.prevMeetingIdentifier) {
+          this.filteredMeeting = response.data.filter(
+            (x) => x.identifier == this.prevMeetingIdentifier
+          );
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-ignore
           this.filteredMeetingItems = this.filteredMeeting[0].meetingItems;
-          console.log(this.filteredMeetingItems)
         }
       },
       (error) => {
@@ -395,6 +545,9 @@ export default class CreateMeetingComponent extends Vue {
       }
     );
   }
+  toggleModal() {
+    this.showModal = !this.showModal;
+  }
   createMeeting() {
     if (this.description && this.meeting.meetingDateAndTime) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -402,30 +555,122 @@ export default class CreateMeetingComponent extends Vue {
       this.meeting.meetingTypeId = this.unfiltereOptions.filter((x) => x.description == this.description)
         .map((ids) => ids.id);
 
-        MeetingService.addMeeting(
+      MeetingService.addMeeting(
         this.meeting.meetingDateAndTime,
         this.meeting.meetingTypeId[0],
         this.description.charAt(0)
       ).then(
         (data) => {
           this.loadTypes();
-          
           this.resp = data.data;
           this.newMeetingIdentifier = this.resp.name;
-          if(parseInt(this.newMeetingIdentifier.slice(1)) > 1){
-            const count = parseInt(this.newMeetingIdentifier.slice(1))-1;
-            this.prevMeetingIdentifier = this.newMeetingIdentifier.charAt(0) +  count;
+          this.newMeetingId =this.resp.id;
+          if (parseInt(this.newMeetingIdentifier.slice(1)) > 1) {
+            const count = parseInt(this.newMeetingIdentifier.slice(1)) - 1;
+            this.prevMeetingIdentifier =
+              this.newMeetingIdentifier.charAt(0) + count;
             this.loadMeetings();
-            console.log(this.prevMeetingIdentifier);
-            console.log("this.prevMeetingIdentifier");
           }
           this.stepNext();
         },
         (error) => {
-          console.log(error);
+          //console.log(error);
         }
       );
     }
+  }
+  createMeetingItems() {
+    if (this.checkedItems) {
+      let result = [];
+      for (let i = 0; i < this.checkedItems.length; i++) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        result.push(this.filteredMeetingItems.filter((x) => x.id == this.checkedItems[i])
+        );
+      }
+      if (result) {
+        for (let i = 0; i < result.length; i++) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.meetingId = this.resp.id;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.personResponsible = result[i][0].personResponsible;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.itemComment = result[i][0].itemComment;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.statusId = result[i][0].statusId;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.dueDate = result[i][0].dueDate;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItem.meetingItem= result[i][0].meetingItem;
+
+          MeetingItemsService.addMeetingItems(
+            this.meetingItem.meetingItem,
+            this.meetingItem.dueDate,
+            this.meetingItem.personResponsible,
+            this.meetingItem.itemComment,
+            this.meetingItem.statusId,
+            this.meetingItem.meetingId
+          ).then(
+            (data) => { 
+              //
+            },
+            (error) => {
+              //console.log(error)
+            }
+          );
+        }
+        this.loadNewItems();
+        this.skipToEnd();
+      }
+    }
+  }
+  createMeetingItem() {
+    if (this.meetingItemFields) {
+          this.meetingItemFields.statusId = 1;
+          MeetingItemsService.addMeetingItems(
+            this.meetingItemFields.meetingItem,
+            this.meetingItemFields.dueDate,
+            this.meetingItemFields.personResponsible,
+            this.meetingItemFields.itemComment,
+            this.meetingItemFields.statusId,
+            this.newMeetingId
+          ).then(
+            (data) => {
+              this.loadNewItems();
+            },
+            (error) => {
+              //console.log(error)
+            }
+          );
+        }
+        this.stepNext();
+  }
+  loadNewItems() {
+    MeetingService.getAllMeetings().then(
+      (response) => {
+        this.content = response.data;
+        if (this.newMeetingId) {
+          this.newMeetingFilter = response.data.filter(
+            (x) => x.id == this.newMeetingId
+          );
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.filteredNewMeetingItems = this.newMeetingFilter[0].meetingItems;
+        }
+      },
+      (error) => {
+        this.content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
   }
   customFormatter(date) {
     return moment(date).format('"MMMM Do YYYY, h:mm:ss a"');
@@ -436,10 +681,20 @@ export default class CreateMeetingComponent extends Vue {
       this.stepTwo = "show";
       return;
     } else if (this.currStep > 2) {
+      this.loadNewItems();
+      this.stepTwo = "";
       this.stepThree = "show";
       return;
     }
-    console.log(this.currStep);
+  }
+  activate() {
+    setTimeout(() => this.stepThree = "false", 500);
+  }
+  skipToEnd() {
+    this.currStep = 2;
+    this.stepTwo = "";
+    this.stepThree = "show";
+    this.loadNewItems();
   }
 }
 </script>

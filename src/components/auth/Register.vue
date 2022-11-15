@@ -11,24 +11,10 @@
                 <div class="mb-6">
                         <label for="firstName" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">FirstName</label>
                         <input v-model="user.firstName" v-validate="'required|min:3|max:20'" type="firstName" name="firstName" id="firstName" placeholder="name" class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                         <div
-                          v-if="errors.has('firstName')"
-                          class="alert alert-danger"
-                          role="alert"
-                        >
-                        FirstName is required!
-                        </div>
                     </div>
                     <div class="mb-6">
                         <label for="lastName" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">LastName</label>
                         <input v-model="user.lastName" v-validate="'required|min:3|max:20'" type="text" name="text" id="lastname" placeholder="lastname" class="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500" />
-                         <div
-                          v-if="errors.has('lastName')"
-                          class="alert alert-danger"
-                          role="alert"
-                        >
-                        LastName is required!
-                        </div>
                     </div>
                     <div class="mb-6">
                         <label for="email" class="block mb-2 text-sm text-gray-600 dark:text-gray-400">Email</label>
@@ -38,7 +24,7 @@
                           class="alert alert-danger"
                           role="alert"
                         >
-                          Username is required!
+                          email is required!
                         </div>
                     </div>
                     <div class="mb-6">
