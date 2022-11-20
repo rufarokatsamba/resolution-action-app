@@ -29,7 +29,7 @@
                       <div class="relative p-6 flex-auto">
                         <form>
                           <div class="-mx-3 md:flex mb-6">
-                          <div class="form-group mb-6 px-3"><p class="mb-1">Item</p>
+                          <div class="form-group mb-6 px-3"><p class="mb-1 font-bold">Item</p>
                             <input
                               v-model="meetingItemFields.meetingItem"
                               type="text"
@@ -38,7 +38,7 @@
                               placeholder="meeting item"
                             />
                           </div>
-                          <div class="form-group mb-6"><p class="mb-1">Date</p>
+                          <div class="form-group mb-6"><p class="mb-1 font-bold">Due Date</p>
                             <div
                               class="bg-white  p-1 flex border border-gray-200 rounded svelte-1l8159u"
                             >
@@ -60,6 +60,8 @@
                         </div>
                         <div class="-mx-3 md:flex mb-6">
                           <div class="form-group mb-6 px-3">
+                          <p class="mb-1 font-bold">Responsible Person</p>
+
                             <input
                               v-model="meetingItemFields.personResponsible"
                               type="text"
@@ -68,9 +70,22 @@
                               placeholder="responsible person"
                             />
                           </div>
+                          <div class="form-group mb-6 px-3">
+                          <p class="mb-1 font-bold">Status</p>
+                          <multiselect
+                            v-if="options"
+                            v-model="description"
+                            :options="options"
+                            :multiple="false"
+                            class="p-1 px-2 appearance-none outline-none w-full text-gray-800"
+                          ></multiselect>
+                          </div>
                         </div>
+                        
+                        
                           <div class="-mx-3 md:flex-inline mb-6 px-3">
                           <div class="form-group mb-6">
+                            <p class="mb-1 font-bold">Comment</p>
                             <textarea
                               v-model="meetingItemFields.itemComment"
                               type="text"
@@ -118,7 +133,9 @@
                 <th class="py-3 px-6 text-left">id</th>
                 <th class="py-3 px-6 text-left">Item</th>
                 <th class="py-3 px-6 text-center">Comment</th>
-                <th class="py-3 px-6 text-center">Date</th>
+                <th class="py-3 px-6 text-center">Responsible Person</th>
+                <th class="py-3 px-6 text-center">Status</th>
+                <th class="py-3 px-6 text-center">Due Date</th>
                 <th class="py-3 px-6 text-center">Actions</th>
               </tr>
             </thead>
@@ -145,6 +162,16 @@
                   </div>
                 </td>
                 <td class="py-3 px-6 text-center">
+                  <div class="flex items-center justify-center">
+                    {{meetingItem.personResponsible}}
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-center">
+                  <div class="flex items-center justify-center">
+                    {{meetingItem.status.description}}
+                  </div>
+                </td>
+                <td class="py-3 px-6 text-center">
                   <span
                     >{{meetingItem.dueDate}}</span
                   >
@@ -152,7 +179,7 @@
                 <td class="py-3 px-6 text-center">
                   <div class="flex item-center justify-center">
                     <div
-                     @click="toggleModal()"
+                     @click="toggleModalWithData(meetingItem)"
                       class="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,11 +199,16 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
-import MeetingService from "@/services/MeetingService";
 import { namespace } from "vuex-class";
 import Datepicker from "vuejs-datepicker";
+import ItemStatusService from "@/services/ItemStatusService";
+import MeetingItemsService from "@/services/MeetingItemsService";
 const Auth = namespace("Auth");
-
+type meetingItem = { meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:"", meetingId:"" ,id:"", IsClosed: false};
+type status = {
+  id: "";
+  description: "";
+};
 @Component({
   components: {
     Datepicker,
@@ -187,8 +219,10 @@ export default class MeetingItemsComponentTable extends Vue {
   private content = "";
   @Auth.State("user")
   private currentUser!: any;
-  private meetingItemFields: any ={ meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:""};
+  private meetingItemFields: any ={ meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:"", meetingId:"" ,id:"",};
+  private meetingItemFieldsData: meetingItem[]=[];
   private showModal = false;
+  private options = [];
 
   @Auth.Action
   private signOut!: () => void;
@@ -202,20 +236,56 @@ export default class MeetingItemsComponentTable extends Vue {
     }
     return false;
   }
+  mounted() {
+    this.$emit("loaded", false);
+    this.loadTypes();
+  }
   toggleModal() {
     this.showModal = !this.showModal;
+  }
+  toggleModalWithData(meetingItem){
+    this.meetingItemFields.meetingItem = meetingItem.meetingItem;
+    this.meetingItemFields.itemComment = meetingItem.itemComment;
+    this.meetingItemFields.dueDate = meetingItem.dueDate;
+    this.meetingItemFields.id = meetingItem.id
+    this.meetingItemFields.personResponsible = meetingItem.personResponsible;
+    this.showModal = !this.showModal;
+
+  }
+  loadTypes() {
+    ItemStatusService.getItemStatus().then(
+      (response) => {
+        this.options = response.data.map((option) => option.description);
+      },
+      (error) => {
+        this.content =
+          (error.response && error.response.data) ||
+          error.message ||
+          error.toString();
+      }
+    );
+  }
+  createMeetingItem() {
+    if (this.meetingItemFields) {  
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItemFieldsData.push({StatusId:1,id:this.meetingItemFields.id, meetingItem:this.meetingItemFields.meetingItem, personResponsible:this.meetingItemFields.personResponsible,itemComment: this.meetingItemFields.itemComment,dueDate: this.meetingItemFields.dueDate, IsClosed: false});
+          MeetingItemsService.updateMeetingItems(
+          this.meetingItemFields
+          ).then(
+            (data) => {
+              //this.loadNewItems();
+            },
+            (error) => {
+              //console.log(error)
+            }
+          );
+        }
+        //this.stepNext();
   }
   logOut() {
     this.signOut();
     this.$router.push("/login");
-  }
-  mounted() {
-    console.log("here noew", this.meetingItemsProp)
-    if(this.meetingItemsProp.length > 0){
-       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      console.log(this.meetingItemsProp[0])
-    }
   }
 }
 </script>
