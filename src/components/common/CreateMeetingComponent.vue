@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 <template>
   <div class="p-5">
     <div class="mx-4 p-4">
@@ -260,7 +261,7 @@
                           <div class="-mx-3 md:flex mb-6">
                           <div class="form-group mb-6 px-3"><p class="mb-1">Item</p>
                             <input
-                              v-model="meetingItemFields.meetingItem"
+                              v-model="meetingItem.meetingItem"
                               type="text"
                               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                               id="meetingtypename"
@@ -279,7 +280,7 @@
                                 </div>
                                
                                 <datepicker
-                                  v-model="meetingItemFields.dueDate"
+                                  v-model="meetingItem.dueDate"
                                   class="px-2 appearance-none w-full text-gray-800"
                                   name="uniquename"
                                 ></datepicker>
@@ -290,7 +291,7 @@
                         <div class="-mx-3 md:flex mb-6">
                           <div class="form-group mb-6 px-3">
                             <input
-                              v-model="meetingItemFields.personResponsible"
+                              v-model="meetingItem.personResponsible"
                               type="text"
                               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                               id="meetingtypename"
@@ -301,7 +302,7 @@
                           <div class="-mx-3 md:flex-inline mb-6 px-3">
                           <div class="form-group mb-6">
                             <textarea
-                              v-model="meetingItemFields.itemComment"
+                              v-model="meetingItem.itemComment"
                               type="text"
                               rows="4"
                               class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -446,13 +447,14 @@ import moment from "moment";
 const Auth = namespace("Auth");
 
 type meetings = {
-  id: 0;
+  id: "";
   description: "";
 };
 type responseObject = {
-  id: 0;
+  id: "";
   name: "";
 };
+type meetingItem = { meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:"", MeetingId:"" , IsClosed: false}
 
 @Component({
   components: {
@@ -471,14 +473,14 @@ export default class CreateMeetingComponent extends Vue {
   private filteredNewMeetingItems =[];
   private filteredMeeting = [];
   private newMeetingFilter = [];
-  private newMeetingId = 0;
+  private newMeetingId = "";
   private description = "";
   private newMeetingIdentifier = "";
   private prevMeetingIdentifier = "";
   private meeting: any = { meetingDateAndTime: "", meetingTypeId: "" };
-  private meetingItemFields: any ={ meetingItem: "", itemComment: "", StatusId:1, dueDate: "" , personResponsible:""};
-  private resp: responseObject = { id: 0, name: "" };
-  private unfiltereOptions: meetings = { id: 0, description: "" };
+  private meetingItemFields: meetingItem[]=[];
+  private resp: responseObject = { id: "", name: "" };
+  private unfiltereOptions: meetings = { id: "", description: "" };
   private checkedItems = [];
   private showModal = false;
   private meetingItem: any = {
@@ -589,7 +591,9 @@ export default class CreateMeetingComponent extends Vue {
         );
       }
       if (result) {
+        let payLoad =[];
         for (let i = 0; i < result.length; i++) {
+          this.meetingItem.isClosed = false;
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           //@ts-ignore
           this.meetingItem.meetingId = this.resp.id;
@@ -609,13 +613,16 @@ export default class CreateMeetingComponent extends Vue {
           //@ts-ignore
           this.meetingItem.meetingItem= result[i][0].meetingItem;
 
+           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          payLoad.push(this.meetingItem);
+        }
+
+        console.log(payLoad);
           MeetingItemsService.addMeetingItems(
-            this.meetingItem.meetingItem,
-            this.meetingItem.dueDate,
-            this.meetingItem.personResponsible,
-            this.meetingItem.itemComment,
-            this.meetingItem.statusId,
-            this.meetingItem.meetingId
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+            payLoad
           ).then(
             (data) => { 
               //
@@ -624,22 +631,19 @@ export default class CreateMeetingComponent extends Vue {
               //console.log(error)
             }
           );
-        }
         this.loadNewItems();
         this.skipToEnd();
       }
     }
   }
   createMeetingItem() {
-    if (this.meetingItemFields) {
-          this.meetingItemFields.statusId = 1;
+    if (this.meetingItemFields) {  
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.meetingItemFields.push({statusId : 1, MeetingId:this.newMeetingId, meetingItem:this.meetingItem.meetingItem, personResponsible:this.meetingItem.personResponsible,itemComment: this.meetingItem.itemComment,dueDate: this.meetingItem.dueDate, IsClosed: false});
           MeetingItemsService.addMeetingItems(
-            this.meetingItemFields.meetingItem,
-            this.meetingItemFields.dueDate,
-            this.meetingItemFields.personResponsible,
-            this.meetingItemFields.itemComment,
-            this.meetingItemFields.statusId,
-            this.newMeetingId
+          
+          this.meetingItemFields
           ).then(
             (data) => {
               this.loadNewItems();
